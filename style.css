@@ -1,0 +1,40 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.table-container {
+    max-height: 400px; /* Adjusted for better viewing */
+    overflow-y: auto;
+}
+.chart-container {
+     height: 400px;
+     position: relative;
+}
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #4f46e5;
+    animation: spin 1s ease infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+/* Style for AI analysis content */
+#aiAnalysisResult h2 { font-size: 1.25rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; }
+#aiAnalysisResult h3 { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; }
+#aiAnalysisResult ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+#aiAnalysisResult p { margin-bottom: 0.75rem; }
+
+/* Control visibility of AI Check button */
+.ai-check-button-hidden {
+    display: none;
+}
