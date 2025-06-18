@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js (if needed for build steps like minification, though not strictly necessary for this simple app)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Inject Environment Variables
+        run: |
+          # Create a temp file to store modified script
+          cp script.js script_temp.js
+
+          # Replace the placeholder with the actual secret AI key
+          # Note: The 's|...|...|g' syntax means substitute globally.
+          # We use '|' as a delimiter because the key itself might contain '/'
+          # which would interfere with the default '/' delimiter.
+          sed -i "s|const AI_API_KEY = typeof __ai_api_key !== 'undefined' ? __ai_api_key : '';|const AI_API_KEY = \"${{ secrets.GEMINI_API_KEY }}\";|" script_temp.js
+
+          # Replace the placeholder for AI button visibility
+          # The '|| true' provides a default of 'true' if the variable is not set.
+          sed -i "s|const SHOW_AI_CHECK_BUTTON = typeof __show_ai_check_button !== 'undefined' ? __show_ai_check_button === 'true' : true;|const SHOW_AI_CHECK_BUTTON = ${{ vars.SHOW_AI_CHECK_BUTTON || 'true' }};|" script_temp.js
+
+          # Overwrite the original script.js with the modified one
+          mv script_temp.js script.js
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ # Publish the root directory of your repo
