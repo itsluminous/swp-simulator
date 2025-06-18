@@ -6,8 +6,8 @@ let currentProjectionView = 'Yearly';
 // --- Environment Variables (for GitHub Pages) ---
 // The actual API key will be set in GitHub Actions/Pages environment variables.
 // In development, you might set it directly in your local environment.
-const AI_API_KEY = typeof __ai_api_key !== 'undefined' ? __ai_api_key : ''; // Placeholder for environment variable
-const SHOW_AI_CHECK_BUTTON = typeof __show_ai_check_button !== 'undefined' ? __show_ai_check_button === 'true' : false; // Default to false
+const AI_API_KEY = "__GEMINI_API_KEY_PLACEHOLDER__"; // This will be replaced by GitHub Actions
+const SHOW_AI_CHECK_BUTTON = typeof __show_ai_check_button !== 'undefined' ? __show_ai_check_button === 'true' : false;
 
 // --- DOM Elements ---
 const calculateBtn = document.getElementById('calculateBtn');
