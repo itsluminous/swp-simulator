@@ -272,8 +272,8 @@ function displayError(message) {
 }
 
 async function handleAICheck() {
-    if (!AI_API_KEY) {
-        displayError("AI Analysis is not configured. Please set the AI_API_KEY environment variable.");
+    if (!AI_API_KEY || AI_API_KEY === "__GEMINI_API_KEY_PLACEHOLDER__") {
+        displayError("To get AI analysis, please fork this repository and set the AI_API_KEY environment variable to gemini API key.");
         console.warn("AI_API_KEY is not set.");
         return;
     }
