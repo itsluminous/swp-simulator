@@ -6,7 +6,7 @@ let currentProjectionView = 'Yearly';
 // --- Environment Variables (for GitHub Pages) ---
 // The actual API key will be set in GitHub Actions/Pages environment variables.
 // In development, you might set it directly in your local environment.
-const AI_API_KEY = "PUT_YOUR_KEY";
+const AI_API_KEY = "__GEMINI_API_KEY_PLACEHOLDER__";
 const SHOW_AI_CHECK_BUTTON = true;
 
 // --- DOM Elements ---
@@ -272,7 +272,7 @@ function displayError(message) {
 }
 
 async function handleAICheck() {
-    if (!AI_API_KEY) {
+    if (!AI_API_KEY || AI_API_KEY === "__GEMINI_API_KEY_PLACEHOLDER__") {
         displayError("To get AI analysis, please fork this repository and set the AI_API_KEY environment variable to gemini API key.");
         console.warn("AI_API_KEY is not set.");
         return;
