@@ -267,13 +267,13 @@ function renderChart(labels, data) {
 
 function displayError(message) {
      console.error("Error:", message);
-     errorText.textContent = message;
-     errorMessageDiv.classList.remove('hidden'); // Ensure error message is visible
+     errorText.innerHTML = message;
+     errorMessageDiv.classList.remove('hidden'); // Make error message visible
 }
 
 async function handleAICheck() {
     if (!AI_API_KEY || AI_API_KEY === "__GEMINI_API_KEY_PLACEHOLDER__") {
-        displayError("To get AI analysis, please fork this repository and set the AI_API_KEY environment variable to gemini API key.");
+        displayError("To get AI analysis, please fork <a href='https://github.com/itsluminous/swp-simulator' class='text-blue-600 hover:underline'>swp-simulator</a> repository and set the AI_API_KEY environment variable to your Gemini API key.");
         console.warn("AI_API_KEY is not set.");
         return;
     }
