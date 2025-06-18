@@ -29,7 +29,7 @@ jobs:
           sed -i "s|__GEMINI_API_KEY_PLACEHOLDER__|\"${{ secrets.GEMINI_API_KEY }}\"|" script_temp.js
 
           # Replace the placeholder for AI button visibility
-          sed -i "s|const SHOW_AI_CHECK_BUTTON = typeof __show_ai_check_button !== 'undefined' ? __show_ai_check_button === 'true' : false;|const SHOW_AI_CHECK_BUTTON = ${{ vars.SHOW_AI_CHECK_BUTTON || 'false' }};|" script_temp.js
+          sed -i "s|const SHOW_AI_CHECK_BUTTON = true;|const SHOW_AI_CHECK_BUTTON = ${{ vars.SHOW_AI_CHECK_BUTTON || 'false' }};|" script_temp.js
 
           # Overwrite the original script.js with the modified one
           mv script_temp.js script.js
