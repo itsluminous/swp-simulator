@@ -267,7 +267,7 @@ function renderChart(labels, data) {
 }
 
 function displayError(message) {
-     console.error("Displaying error:", message);
+     console.error("Error:", message);
      errorText.textContent = message;
      errorMessageDiv.classList.remove('hidden'); // Ensure error message is visible
 }
