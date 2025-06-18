@@ -28,14 +28,12 @@ const errorText = document.getElementById('errorText');
 
 // --- Initial Setup ---
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM Content Loaded. Initializing app.");
     // Control visibility of the AI Check button based on environment variable
     if (!SHOW_AI_CHECK_BUTTON) {
         aiCheckBtn.classList.add('ai-check-button-hidden');
     }
 
     calculateBtn.click(); // Perform an initial calculation on page load
-    console.log("Initial calculation triggered.");
 });
 
 // --- Event Listeners ---
@@ -46,13 +44,10 @@ viewMonthlyBtn.addEventListener('click', () => setProjectionView('Monthly'));
 
 // --- Core Functions ---
 function handleCalculation() {
-    console.log("handleCalculation called.");
     try {
         hideAllSections();
         const inputs = getInputs();
-        console.log("Inputs retrieved:", inputs);
         validateInputs(inputs);
-        console.log("Inputs validated successfully.");
 
         lastCalculationInputs = { ...inputs };
         const { projectedCorpus, initialMonthlyWithdrawal } = calculateRetirement(inputs);
@@ -62,7 +57,6 @@ function handleCalculation() {
 
         displaySummary(projectedCorpus, initialMonthlyWithdrawal);
         const { tableHTML, chartLabels, chartData } = generateProjections();
-        console.log("Projections generated.");
 
         updateTable(tableHTML);
         renderChart(chartLabels, chartData);
@@ -72,7 +66,6 @@ function handleCalculation() {
         if (SHOW_AI_CHECK_BUTTON) {
             aiCheckBtn.disabled = false;
         }
-        console.log("UI updated and AI Check button enabled (if visible).");
 
     } catch (error) {
         console.error("Error in handleCalculation:", error);
@@ -81,7 +74,6 @@ function handleCalculation() {
 }
 
 function setProjectionView(view) {
-    console.log("Setting projection view to:", view);
     if (currentProjectionView === view || !lastCalculationInputs.projectedCorpus) {
         console.log("Projection view already set or no data to project.");
         return;
@@ -90,11 +82,9 @@ function setProjectionView(view) {
     updateToggleButtonUI();
     const { tableHTML } = generateProjections();
     updateTable(tableHTML);
-    console.log("Projection view updated.");
 }
 
 function updateTable(html) {
-     console.log("Updating table.");
      updateTableHeaders();
      projectionTableBody.innerHTML = html;
 }
@@ -209,14 +199,12 @@ function hideAllSections() {
     projectionContainer.classList.add('hidden');
     chartContainer.classList.add('hidden');
     aiAnalysisContainer.classList.add('hidden');
-    console.log("All sections hidden.");
 }
 
 function showResultSections() {
     resultsDiv.classList.remove('hidden');
     projectionContainer.classList.remove('hidden');
     chartContainer.classList.remove('hidden');
-    console.log("Result sections shown.");
 }
 
 function updateToggleButtonUI() {
@@ -227,7 +215,6 @@ function updateToggleButtonUI() {
     viewMonthlyBtn.classList.toggle('bg-white', !isYearly);
     viewMonthlyBtn.classList.toggle('text-indigo-600', !isYearly);
     viewMonthlyBtn.classList.toggle('shadow', !isYearly);
-    console.log("Toggle button UI updated.");
 }
 
 function updateTableHeaders() {
@@ -235,7 +222,6 @@ function updateTableHeaders() {
         ? ['Year', 'Opening Balance', 'Annual Withdrawal', 'Portfolio Gain', 'Closing Balance']
         : ['Month', 'Opening Balance', 'Monthly Withdrawal', 'Portfolio Gain', 'Closing Balance'];
     projectionHeader.innerHTML = headers.map(h => `<th scope="col" class="px-6 py-3">${h}</th>`).join('');
-    console.log("Table headers updated for:", currentProjectionView, "view.");
 }
 
 function buildRow(data) {
@@ -253,11 +239,9 @@ function displaySummary(corpus, withdrawal) {
     const formatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
     document.getElementById('projectedCorpus').textContent = formatter.format(corpus);
     document.getElementById('monthlyWithdrawal').textContent = formatter.format(withdrawal);
-    console.log("Summary displayed. Corpus:", corpus, "Withdrawal:", withdrawal);
 }
 
 function renderChart(labels, data) {
-    console.log("Rendering chart.");
     const ctx = document.getElementById('portfolioChart').getContext('2d');
     if (portfolioChartInstance) portfolioChartInstance.destroy();
     portfolioChartInstance = new Chart(ctx, {
@@ -280,7 +264,6 @@ function renderChart(labels, data) {
             plugins: { tooltip: { callbacks: { label: c => ` Balance: ${new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(c.parsed.y)}` } } }
         }
     });
-    console.log("Chart rendered.");
 }
 
 function displayError(message) {
@@ -290,7 +273,6 @@ function displayError(message) {
 }
 
 async function handleAICheck() {
-    console.log("handleAICheck called.");
     if (!AI_API_KEY) {
         displayError("AI Analysis is not configured. Please set the AI_API_KEY environment variable.");
         console.warn("AI_API_KEY is not set.");
@@ -301,7 +283,6 @@ async function handleAICheck() {
     aiLoading.classList.remove('hidden');
     aiAnalysisResult.classList.add('hidden');
     aiCheckBtn.disabled = true;
-    console.log("AI analysis sections prepared, button disabled.");
 
     const formatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
     const { currentMarketValue, monthlySIP, sipTenureMonths, marketReturnRate, inflationRate, swpTenure, riskTolerance, projectedCorpus, initialMonthlyWithdrawal } = lastCalculationInputs;
@@ -318,11 +299,9 @@ async function handleAICheck() {
         const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         if (!response.ok) throw new Error(`API Error: ${response.status} ${response.statusText}`);
         const result = await response.json();
-        console.log("AI API response received:", result);
 
         if (result.candidates && result.candidates.length > 0) {
             aiAnalysisResult.innerHTML = marked.parse(result.candidates[0].content.parts[0].text);
-            console.log("AI analysis parsed and displayed.");
         } else {
             throw new Error("Received an empty response from the AI. Please try again.");
         }
@@ -337,6 +316,5 @@ async function handleAICheck() {
         if (SHOW_AI_CHECK_BUTTON) {
             aiCheckBtn.disabled = false;
         }
-        console.log("AI analysis process finished.");
     }
 }
