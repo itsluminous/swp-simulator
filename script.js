@@ -98,13 +98,12 @@ function getInputs() {
         marketReturnRate: parseFloat(document.getElementById('marketReturnRate').value) || 0,
         inflationRate: parseFloat(document.getElementById('inflationRate').value) || 0,
         swpTenure: parseInt(document.getElementById('swpTenure').value) || 0,
-        riskTolerance: document.getElementById('riskTolerance').value,
     };
 }
 
 function validateInputs(inputs) {
     for (const key in inputs) {
-        if (key !== 'riskTolerance' && (isNaN(inputs[key]) || inputs[key] < 0)) {
+        if (isNaN(inputs[key]) || inputs[key] < 0) {
             throw new Error(`Invalid input for ${key}. Please enter a positive number.`);
         }
     }
@@ -285,11 +284,11 @@ async function handleAICheck() {
     aiCheckBtn.disabled = true;
 
     const formatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
-    const { currentMarketValue, monthlySIP, sipTenureMonths, marketReturnRate, inflationRate, swpTenure, riskTolerance, projectedCorpus, initialMonthlyWithdrawal } = lastCalculationInputs;
+    const { currentMarketValue, monthlySIP, sipTenureMonths, marketReturnRate, inflationRate, swpTenure, projectedCorpus, initialMonthlyWithdrawal } = lastCalculationInputs;
 
     const prompt = `You are a friendly and experienced financial advisor in India. Your goal is to provide a clear, helpful, and encouraging analysis of a user's retirement plan. Do not provide any financial advice that could be construed as professional investment advice. Frame all suggestions as educational and for informational purposes only, and add a disclaimer at the end. Based on the following data, please provide a "Financial Health Check":
         **User's Financial Data:**\n* Current Portfolio Value: ${formatter.format(currentMarketValue)}\n* Monthly SIP: ${formatter.format(monthlySIP)}\n* Remaining SIP Tenure: ${sipTenureMonths} months\n* Projected Retirement Corpus: ${formatter.format(projectedCorpus)}\n* Desired Retirement Period (SWP): ${swpTenure} years\n* Initial Monthly Withdrawal (SWP): ${formatter.format(initialMonthlyWithdrawal)}
-        **Assumptions:**\n* Expected Annual Market Return: ${marketReturnRate}%\n* Expected Annual Inflation: ${inflationRate}%\n* User's Risk Tolerance: ${riskTolerance}
+        **Assumptions:**\n* Expected Annual Market Return: ${marketReturnRate}%\n* Expected Annual Inflation: ${inflationRate}%.
         **Your Analysis Should Include:**\n1.  **Overall Outlook:** Start with a brief, encouraging summary. Is the plan on track, ambitious, or cautious?\n2.  **Potential Strengths:** What are the strong points of this plan? (e.g., high savings rate, long investment horizon).\n3.  **Potential Risks & Blind Spots:** What should the user be mindful of? (e.g., sequence of returns risk, underestimating inflation, healthcare costs). Be specific.\n4.  **Actionable Suggestions:** Provide 2-3 clear, actionable tips. For example: "Consider creating a bucket for medical emergencies" or "Review your asset allocation as you near retirement."\n5.  **Lifestyle Snapshot:** Based on the initial monthly withdrawal of ${formatter.format(initialMonthlyWithdrawal)}, provide a sample monthly budget for a comfortable lifestyle in a major Indian metro city like Bangalore or Pune. Use categories like Housing, Food, Utilities, Transport, Healthcare, and Leisure.
         Please format your response using Markdown for clarity (headings, bold text, and lists).`;
 
