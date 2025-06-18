@@ -267,8 +267,8 @@ function renderChart(labels, data) {
 
 function displayError(message) {
      console.error("Error:", message);
-     errorText.textContent = message;
-     errorMessageDiv.classList.remove('hidden'); // Ensure error message is visible
+     errorText.innerHTML = message;
+     errorMessageDiv.classList.remove('hidden'); // Make error message visible
 }
 
 async function handleAICheck() {
