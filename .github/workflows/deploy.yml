@@ -32,7 +32,7 @@ jobs:
 
           # Replace the placeholder for AI button visibility
           # The '|| true' provides a default of 'true' if the variable is not set.
-          sed -i "s|const SHOW_AI_CHECK_BUTTON = typeof __show_ai_check_button !== 'undefined' ? __show_ai_check_button === 'true' : true;|const SHOW_AI_CHECK_BUTTON = ${{ vars.SHOW_AI_CHECK_BUTTON || 'true' }};|" script_temp.js
+          sed -i "s|const SHOW_AI_CHECK_BUTTON = typeof __show_ai_check_button !== 'undefined' ? __show_ai_check_button === 'true' : true;|const SHOW_AI_CHECK_BUTTON = ${{ vars.SHOW_AI_CHECK_BUTTON || 'false' }};|" script_temp.js
 
           # Overwrite the original script.js with the modified one
           mv script_temp.js script.js
